@@ -1,0 +1,8 @@
+const Service = require('${data.path}');
+
+class ${data.name} extends Service {
+    handle(request) {
+    }
+}
+
+module.exports = ${data.name};

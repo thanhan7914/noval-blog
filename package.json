@@ -1,0 +1,35 @@
+{
+  "name": "noval",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node server",
+    "nodemon": "nodemon server",
+    "db:load": "knex seed:run",
+    "db:migrate": "knex migrate:latest",
+    "db:rollback": "knex migrate:rollback",
+    "db:currentVersion": "knex migrate:currentVersion"
+  },
+  "keywords": [],
+  "author": "Thanh An",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
+    "csurf": "^1.10.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.0",
+    "formidable": "^1.2.1",
+    "knex": "^0.20.6",
+    "lodash": "^4.17.15",
+    "mysql": "^2.17.1",
+    "pluralize": "^8.0.0",
+    "pug": "^2.0.4",
+    "serve-favicon": "^2.5.0",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {}
+}

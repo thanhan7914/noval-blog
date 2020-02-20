@@ -1,0 +1,15 @@
+const Controller = require('${data.path}');
+
+class ${data.name} extends Controller {
+    static get __dependencies() {
+        return {
+            constructor: []
+        }
+    }
+
+    constructor () {
+        super()
+    }
+}
+
+module.exports = ${data.name};

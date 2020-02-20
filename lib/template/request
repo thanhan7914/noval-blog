@@ -1,0 +1,14 @@
+const Request = require('${data.path}');
+
+class ${data.name} extends Request {
+    auth() {
+        return false;
+    }
+
+    rules() {
+        return {
+        };
+    }
+}
+
+module.exports = ${data.name};

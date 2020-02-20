@@ -1,0 +1,11 @@
+{
+    "success": "success",
+    "email": "email",
+    "required": "required",
+    "nullable": "nullable",
+    "string": "string",
+    "array": "array",
+    "max": "max",
+    "min": "min",
+    "regexp": "regexp"
+}

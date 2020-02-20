@@ -1,0 +1,9 @@
+const Middleware = require('${data.path}');
+
+class ${data.name} extends Middleware {
+    handle(req, res, next) {
+        next();
+    }
+}
+
+module.exports = ${data.name};
