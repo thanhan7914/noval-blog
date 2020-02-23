@@ -4,21 +4,17 @@ aside#colorlib-aside.js-fullheight(role='complementary')
     nav#colorlib-main-menu(role='navigation')
         ul
             li.colorlib-active
-                a(href='index.html') Home
+                a(href='/') Home
             li
-                a(href='fashion.html') Fashion
+                a(href='/about') About
             li
-                a(href='travel.html') Travel
-            li
-                a(href='about.html') About
-            li
-                a(href='contact.html') Contact
+                a(href='/contact') Contact
     .colorlib-footer
         h1#colorlib-logo.mb-4
-            a(href='index.html' style='background-image: url(images/bg_1.jpg);')
+            a(href='index.html' style='background-image: url(/images/bg_1.jpg);')
                 | Noval 
                 span Blog
-        .mb-4
+        //- .mb-4
             h3 Subscribe for newsletter
             form.colorlib-subscribe-form(action='#')
                 .form-group.d-flex
@@ -27,6 +23,7 @@ aside#colorlib-aside.js-fullheight(role='complementary')
                     input.form-control(type='text' placeholder='Enter Email Address')
         p.pfooter
             // Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0.
+            | Noval v1.2.5
             | Copyright &copy; 
             script.
                 document.write(new Date().getFullYear());

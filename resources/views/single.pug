@@ -1,0 +1,105 @@
+extends layouts/noright
+
+block mainpage
+    .row.pt-md-4
+        h1.mb-3(style="width:100%;")= article.title
+
+        .article-content(style="width:100%")
+            != article.content
+
+        .tag-widget.post-tag-container.mb-5.mt-5
+            .tagcloud
+                each tag in article.tags
+                    a.tag-cloud-link(href='#')= tag.name
+
+        .about-author.d-flex.p-4.bg-light
+            .bio.mr-5
+                img.img-fluid.mb-4(src='/images/person_1.jpg' alt='Image placeholder')
+            .desc
+                h3= article.user.displayname
+                p
+                    = article.user.description
+        //- .pt-5.mt-5
+            h3.mb-5.font-weight-bold 6 Comments
+            ul.comment-list
+                li.comment
+                    .vcard.bio
+                        img(src='images/person_1.jpg' alt='Image placeholder')
+                    .comment-body
+                        h3 John Doe
+                        .meta October 03, 2018 at 2:21pm
+                        p
+                            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                        p
+                            a.reply(href='#') Reply
+                li.comment
+                    .vcard.bio
+                        img(src='images/person_1.jpg' alt='Image placeholder')
+                    .comment-body
+                        h3 John Doe
+                        .meta October 03, 2018 at 2:21pm
+                        p
+                            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                        p
+                            a.reply(href='#') Reply
+                    ul.children
+                        li.comment
+                            .vcard.bio
+                                img(src='images/person_1.jpg' alt='Image placeholder')
+                            .comment-body
+                                h3 John Doe
+                                .meta October 03, 2018 at 2:21pm
+                                p
+                                    | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                                p
+                                    a.reply(href='#') Reply
+                            ul.children
+                                li.comment
+                                    .vcard.bio
+                                        img(src='images/person_1.jpg' alt='Image placeholder')
+                                    .comment-body
+                                        h3 John Doe
+                                        .meta October 03, 2018 at 2:21pm
+                                        p
+                                            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                                        p
+                                            a.reply(href='#') Reply
+                                    ul.children
+                                        li.comment
+                                            .vcard.bio
+                                                img(src='images/person_1.jpg' alt='Image placeholder')
+                                            .comment-body
+                                                h3 John Doe
+                                                .meta October 03, 2018 at 2:21pm
+                                                p
+                                                    | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                                                p
+                                                    a.reply(href='#') Reply
+                li.comment
+                    .vcard.bio
+                        img(src='images/person_1.jpg' alt='Image placeholder')
+                    .comment-body
+                        h3 John Doe
+                        .meta October 03, 2018 at 2:21pm
+                        p
+                            | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur quidem laborum necessitatibus, ipsam impedit vitae autem, eum officia, fugiat saepe enim sapiente iste iure! Quam voluptas earum impedit necessitatibus, nihil?
+                        p
+                            a.reply(href='#') Reply
+            // END comment-list
+            .comment-form-wrap.pt-5
+                h3.mb-5 Leave a comment
+                form.p-3.p-md-5.bg-light(action='#')
+                    .form-group
+                        label(for='name') Name *
+                        input#name.form-control(type='text')
+                    .form-group
+                        label(for='email') Email *
+                        input#email.form-control(type='email')
+                    .form-group
+                        label(for='website') Website
+                        input#website.form-control(type='url')
+                    .form-group
+                        label(for='message') Message
+                        textarea#message.form-control(name='' cols='30' rows='10')
+                    .form-group
+                        input.btn.py-3.px-4.btn-primary(type='submit' value='Post Comment')

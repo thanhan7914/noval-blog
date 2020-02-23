@@ -1,48 +1,61 @@
-extends layouts/main
+//- extends layouts/main
+extends layouts/noright
 
 block mainpage
     .row.pt-md-4
-        .col-md-12
-            .blog-entry.ftco-animate.d-md-flex
-                a.img.img-2(href='single.html' style='background-image: url(images/image_1.jpg);')
-                .text.text-2.pl-md-4
-                    h3.mb-2
-                        a(href='single.html') A Loving Heart is the Truest Wisdom
-                    .meta-wrap
-                        p.meta
-                            span
-                                i.icon-calendar.mr-2
-                                | June 28, 2019
-                            span
-                                a(href='single.html')
-                                    i.icon-folder-o.mr-2
-                                    | Travel
-                            span
-                                i.icon-comment2.mr-2
-                                | 5 Comment
-                    p.mb-4
-                        | A small river named Duden flows by their place and supplies it with the necessary regelialia.
-                    p
-                        a.btn-custom(href='#')
-                            | Read More 
-                            span.ion-ios-arrow-forward
+        each post in posts
+            .col-md-12
+                .blog-entry.ftco-animate.d-md-flex
+                    a.img.img-2(href=post.href style='background-image: url('+post.coverImage+');')
+                    .text.text-2.pl-md-4
+                        h3.mb-2
+                            a(href=post.href)= post.title
+                        .meta-wrap
+                            p.meta
+                                span
+                                    i.icon-calendar.mr-2
+                                    = post.created_at.toDateString()
+                                span
+                                    each cat in post.categories
+                                        a(href=cat.href)
+                                            i.icon-folder-o.mr-2
+                                            = cat.name
+                                span
+                                    i.icon-comment2.mr-2
+                                    = post.comments.length
+                                    |  Comment
+                        p.mb-4
+                            = post.shortContent
+                        p
+                            a.btn-custom(href=post.href)
+                                | Read More 
+                                span.ion-ios-arrow-forward
 
+    if pages > 1
+        .row
+            .col
+                .block-27
+                    ul#pagination
+                        li
+                            if page - 1 > 0
+                                a(href='?page=' + (page - 1)) &lt;
+                            else
+                                a(href='javascript:void(0);') &lt;
 
-    .row
-        .col
-            .block-27
-                ul
-                    li
-                        a(href='#') &lt;
-                    li.active
-                        span 1
-                    li
-                        a(href='#') 2
-                    li
-                        a(href='#') 3
-                    li
-                        a(href='#') 4
-                    li
-                        a(href='#') 5
-                    li
-                        a(href='#') &gt;
+                        each val, idx in numbers
+                            if idx > 0 && val - numbers[idx - 1] > 1
+                                li
+                                    a(href='javascript:void(0);') ...
+                            if val != page
+                                li
+                                    a(href='?page='+val)= val
+                            else
+                                li
+                                    a(href='javascript:void(0);' style='background: #1eafed; color: white;')
+                                        = val
+
+                        li
+                            if page <= pages
+                                a(href='?page=' + (Number(page) + 1)) &gt;
+                            else
+                                a(href='javascript:void(0);') &gt;

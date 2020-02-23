@@ -1,0 +1,99 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'category';
+
+block title
+    title= isEdited ? 'Edit post - Vali admin' : 'Category - Valid admin'
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-dashboard
+                |  Blank Page
+            p Start a beautiful journey here
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                a(href='#') Blank Page
+
+    .row
+        .col-md-12
+            .tile
+                if request.errors.length > 0
+                    .alert.alert-dismissible.alert-danger
+                        each error in request.errors
+                            p= error.validate.message
+
+                .row
+                    .col-lg-6
+                        .row
+                            .col-md-12
+                                h3.title-title Create a post
+                                .tile-body
+
+                                    form(action='/admin/category' method='post')
+                                        input(type="hidden" name="_csrf" value=csrfToken())
+                                        .form-group
+                                            label(for='name') Name
+                                            input#name.form-control(type='text' name='name' placeholder='category name'
+                                                    value=request.old('name'))
+
+                                        .title-footer
+                                            input.btn.btn-primary(value='Add category' type='submit' onclick='onSubmit();')
+
+                                br
+                                .tile-body
+                                    form#edit(action='/admin/category/' method='post')
+                                        input(type="hidden" name="_csrf" value=csrfToken())
+                                        .form-group
+                                            label(for='catid') Category Id
+                                            input#catid.form-control(type='text' name='catid' placeholder='category id'
+                                                    value=request.old('catid'))
+                                        .form-group
+                                            label(for='ename') Name
+                                            input#ename.form-control(type='text' name='name' placeholder='category name'
+                                                    value=request.old('name'))
+
+                                        .title-footer
+                                            input.btn.btn-primary(value='Edit category' type='submit' onclick='onEdit();')
+
+                                br
+                                .tile-body
+                                    form#delete(action='/admin/category/' method='post')
+                                        input(type="hidden" name="_csrf" value=csrfToken())
+                                        .form-group
+                                            label(for='delcatid') Category Id
+                                            input#delcatid.form-control(type='text' name='catid' placeholder='category id'
+                                                    value=request.old('catid'))
+
+                                        .title-footer
+                                            input.btn.btn-primary(value='Delete category' type='submit' onclick='onDestroy();')
+
+                    .col-lg-6
+                        .row
+                            .col-md-12
+                                .title
+                                    h3.title-title Category list
+                                    .tile-body
+                                        each cat in categories
+                                            span.btn.btn-outline-primary= cat.name
+                                                | #
+                                                = cat.id
+
+block specific-js
+    script.
+        function onSubmit() {
+            //- 
+        }
+
+        function onEdit() {
+            $('form#edit').attr('action', '/admin/category/' + $('#catid').val());
+        }
+
+        function onDestroy() {
+            $('form#delete').attr('action', '/admin/category/' + $('#delcatid').val() + '/destroy');
+        }
