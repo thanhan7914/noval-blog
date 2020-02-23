@@ -1,0 +1,170 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'post-create';
+    - var activeGroup = 'posts';
+
+block title
+    title= isEdited ? 'Edit post - Vali admin' : 'Create post - Valid admin'
+
+block styles
+    link(href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet")
+    style.
+        #editor {
+            height: 375px;
+        }
+
+        .ql-showHtml:after {
+            content: "[source]";
+        }
+
+        .ql-container {
+            resize: vertical;
+            overflow-y: scroll;
+        }
+
+block scripts
+    script(src="https://cdn.quilljs.com/1.3.6/quill.js")
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-dashboard
+                |  Blank Page
+            p Start a beautiful journey here
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                a(href='#') Blank Page
+
+    .row
+        .col-md-12
+            .tile
+                h3.title-title Create a post
+                .tile-body
+
+                    if request.errors.length > 0
+                        .alert.alert-dismissible.alert-danger
+                            each error in request.errors
+                                p= error.validate.message
+
+
+                    form(action=(isEdited ? '/admin/post/' + article.id : '/admin/post') method='post')
+                        input(type="hidden" name="_csrf" value=csrfToken())
+                        .row
+                            .col-lg-12
+                                .form-group
+                                    label(for='title') Title
+                                    input#title.form-control(type='text' name='title' placeholder='post title'
+                                         value=isEdited ? article.title : request.old('title'))
+
+                                .form-group
+                                    label(for='description') Description
+                                    textarea#description.form-control(rows='5' name='description')
+                                        = isEdited ? article.description : request.old('description')
+
+                                .form-group
+                                    label(for='editor') Content
+                                    input(type="hidden" name="content" id="content")
+                                    #editor
+                                        != isEdited ? article.content : request.old('content')
+
+                                .form-group
+                                    abel(for='cetegories') Categories
+                                    select#categories(name='categories[]' multiple='multiple' style='width: 100%'
+                                         data-selected=isEdited ? article.categories.toArrayWith('id') : '[]')
+                                        each cat in categories
+                                            option(value=cat.id)= cat.name
+
+                                .form-group
+                                    abel(for='tags') Tags
+                                    select#tags(name='tags[]' multiple='multiple' style='width: 100%'
+                                         data-selected=isEdited ? article.tags.toArrayWith('name') : '[]')
+                                        each tag in tags
+                                            option(value=tag.name)= tag.name
+
+                                .form-group
+                                    label(for='title') Image Cover
+                                    input#cover.form-control(type='text' name='cover' placeholder='https://'
+                                        value=isEdited ? article.cover : request.old('cover'))
+
+                        .title-footer
+                            input.btn.btn-primary(value=(isEdited ? 'Edit this post' : 'Create a post') type='submit' onclick='onSubmit();')
+
+block specific-js
+    script.
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+            [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+            [{ 'direction': 'rtl' }],                         // text direction
+
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+            [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean'],                                         // remove formatting button
+            ['link', 'image', 'video'],
+            ['showHtml']
+        ];
+
+        var quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions
+            },
+            theme: 'snow'
+        });
+
+        var txtArea = document.createElement('textarea');
+        txtArea.style.cssText = "width: 100%;margin: 0px;background: rgb(29, 29, 29);box-sizing: border-box;color: rgb(204, 204, 204);font-size: 15px;outline: none;padding: 20px;line-height: 24px;font-family: Consolas, Menlo, Monaco, &quot;Courier New&quot;, monospace;position: absolute;top: 0;bottom: 0;border: none;display:none" 
+        txtArea.value = quill.container.firstChild.innerHTML;
+
+        var htmlEditor = quill.addContainer('ql-custom')
+        htmlEditor.appendChild(txtArea)
+
+        var content = document.getElementById('content');
+
+        var myEditor = document.querySelector('#editor')
+        quill.on('text-change', (delta, oldDelta, source) => {
+            var html = myEditor.children[0].innerHTML
+            txtArea.value = html
+            content.value = html
+        })
+
+        var customButton = document.querySelector('.ql-showHtml');
+        customButton.addEventListener('click', function() {
+            if (txtArea.style.display === '') {
+                var html = txtArea.value
+                self.quill.pasteHTML(html)
+            }
+            txtArea.style.display = txtArea.style.display === 'none' ? '' : 'none'
+        });
+
+        quill.root.style['min-height'] = '450px';
+
+        $(document).ready(function() {
+            var categories =  $('#categories');
+            categories.select2();
+            categories.val(JSON.parse(categories.attr('data-selected')));
+            categories.trigger('change');
+            var tags =  $('#tags');
+            tags.select2({
+                tags: true
+            });
+            tags.val(JSON.parse(tags.attr('data-selected')));
+            tags.trigger('change');
+        });
+
+        function onSubmit() {
+            content.value = txtArea.value;//quill.container.firstChild.innerHTML;
+        }

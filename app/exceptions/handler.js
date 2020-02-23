@@ -7,6 +7,8 @@ class Handler {
         response.status(error.statusCode ? error.statusCode : 404);
 
         console.log(error);
+        console.log(request.url);
+        
         switch(true)
         {
             case error instanceof AccessDeniedHttpError:

@@ -1,0 +1,91 @@
+extends ../layouts/_layout.pug
+
+block variables
+    - var activePage = 'post-index';
+    - var activeGroup = 'posts';
+
+block title
+    title Show all post - Vali Admin
+
+block content
+    .app-title
+        div
+            h1
+                i.fa.fa-dashboard
+                |  Blank Page
+            p Start a beautiful journey here
+
+        ul.app-breadcrumb.breadcrumb
+            li.breadcrumb-item
+                i.fa.fa-home.fa-lg
+            li.breadcrumb-item
+                a(href='#') Blank Page
+
+    .row
+        .col-md-12
+            .tile
+                h3.tile-title All posts
+                table.table
+                    thead
+                        tr
+                            th #
+                            th Title
+                            th Category
+                            th Author
+                            th Date
+                            th Action
+                    tbody
+                        - let i = (page - 1) * 10 + 1
+                        each article, idx in posts
+                            tr
+                                //- td= idx + i
+                                td= article.id
+                                td
+                                    a(href='/admin/post/' + article.id + '/edit')
+                                        = article.title
+                                    p
+                                        = article.shortContent
+                                    p
+                                        each tagname in article.tags.toArrayWith('name')
+                                            button.btn.btn-outline-primary= tagname
+                                td
+                                    each catname, idx in article.categories.toArrayWith('name')
+                                        if idx > 0
+                                            span , 
+                                        span= catname
+                                td= article.user.displayname
+                                td= article.created_at.toDateString()
+                                td
+                                    a(href='javascript:void(0)' onclick='destroy(\'' + article.id +'\')') Delete
+
+                .title-footer
+                    ul.pagination
+                        li.page-item
+                            if page - 1 > 0
+                                a.page-link(href='?page=' + (page - 1)) &lt;
+                            else
+                                a.page-link(href='javascript:void(0);') &lt;
+
+                        each val, idx in numbers
+                            if idx > 0 && val - numbers[idx - 1] > 1
+                                li.page-item
+                                    a.page-link(href='javascript:void(0);') ...
+                            if val != page
+                                li.page-item
+                                    a.page-link(href='?page='+val)= val
+                            else
+                                li.page-item
+                                    a.page-link(href='javascript:void(0);' style='background: #1eafed; color: white;')
+                                        = val
+
+                        li.page-item
+                            if page <= pages
+                                a.page-link(href='?page=' + (Number(page) + 1)) &gt;
+                            else
+                                a.page-link(href='javascript:void(0);') &gt;
+
+block specific-js
+    script.
+        function destroy(id) {
+            location.href = '/admin/post/' + id + '/destroy';
+        }

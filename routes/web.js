@@ -3,16 +3,21 @@ const middleware = require('../lib/middleware');
 
 middleware(router, 'web');
 
-router.get('/', function(req, res) {
-    res.render('index');
-});
+router.get('/', {types: {page: 'number'}}, 'HomeController@index');
+router.get('/article/:slug', 'HomeController@article');
 
-router.get('/test', {
-    validator: {
-        'q': 'string|min:1|email2'
-    }
-}, function(req, res) {
-    res.render('index');
+router.get('/admin/login', function(req, res) {
+    res.render('admin/login');
 });
+router.get('/admin/logout', function(req, res) {
+    req.session.destroy();
+    res.redirect('/');
+});
+router.post('/admin/login', 'Auth/LoginController@index');
+
+
+router.group('/admin', {
+    middleware: ['app/http/middleware/CheckIfAdmin']
+}, require('./admin'));
 
 module.exports = router.ExpressRouter;
