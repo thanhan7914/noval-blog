@@ -6,7 +6,7 @@ const User = require("./user");
 
 class Post extends Model {
     getUser() {
-        return this.hasOne(User, "user_id", "id");
+        return this.belongsTo(User, "user_id", "id");
     }
 
     getCategory() {
@@ -27,7 +27,7 @@ class Post extends Model {
     }
 
     async populate() {
-        this.user = await this.getUser().instance;
+        this.user = await this.getUser();
         this.comments = await this.getComment().collection();
         this.categories = await this.getCategory().collection();
         this.tags = await this.getTag().collection();
