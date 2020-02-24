@@ -7,6 +7,7 @@ exports.up = function(knex) {
         table.integer('post_id').unsigned().notNullable()
             .references('id').inTable('posts').onDelete('CASCADE').onUpdate('RESTRICT');
         table.text('content').notNullable();
+        table.integer('parent_id').defaultTo(0);
         table.boolean('publication').defaultTo(false);
         table.timestamp('created_at').defaultTo(knex.fn.now())
         table.timestamp('updated_at').defaultTo(knex.fn.now())

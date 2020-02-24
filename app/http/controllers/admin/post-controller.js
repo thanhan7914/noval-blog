@@ -5,6 +5,7 @@ const User = require('../../../models/user');
 const Post = require('../../../models/post');
 const slug = require('../../../../commons/slug');
 const util = require('../../../../lib/utils');
+const _ = require('lodash');
 
 const MAX_PAGES = 80;
 
@@ -61,17 +62,16 @@ class PostController extends Controller {
         await post.getCategory().attach(categories);
 
         let tags = req.get('tags') ? req.get('tags') : [];
-        let tagsid = [];
-        for(let name of tags)
+        tags = tags.map(name => name.toLowerCase());
+        let exists = await Tag.whereIn('name', tags).getData();
+        let notexists = _.difference(tags, exists.toArrayWith('name'));
+        for(let name of notexists)
         {
-            let tmp = await Tag.findOne({name: name});
-            if(tmp == null)
-                tmp = await Tag.create({name: name, slug: slug(name)});
-            
-            tagsid.push(tmp.primaryValue);
+            let tmp = await Tag.create({name: name, slug: slug(name)});
+            exists.push(tmp);
         }
 
-        await post.getTag().attach(tagsid);
+        await post.getTag().attach(exists.toArrayWith('primary'));
 
         res.redirect('/admin/post');
     }
@@ -120,17 +120,17 @@ class PostController extends Controller {
         await post.getCategory().attach(categories);
 
         let tags = req.get('tags') ? req.get('tags') : [];
-        let tagsid = [];
-        for(let name of tags)
+        tags = tags.map(name => name.toLowerCase());
+        let exists = await Tag.whereIn('name', tags).getData();
+        let notexists = _.difference(tags, exists.toArrayWith('name'));
+
+        for(let name of notexists)
         {
-            let tmp = await Tag.findOne({name: name});
-            if(tmp == null)
-                tmp = await Tag.create({name: name, slug: slug(name)});
-            
-            tagsid.push(tmp.primaryValue);
+            let tmp = await Tag.create({name: name, slug: slug(name)});
+            exists.push(tmp);
         }
 
-        await post.getTag().attach(tagsid);
+        await post.getTag().attach(exists.toArrayWith('primary'));
 
         res.redirect('/admin/post');
     }
