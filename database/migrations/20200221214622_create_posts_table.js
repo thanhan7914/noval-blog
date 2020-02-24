@@ -6,7 +6,7 @@ exports.up = function(knex) {
             .references('id').inTable('users').onDelete('CASCADE').onUpdate('RESTRICT');
         table.string('title', 250).notNullable();
         table.text('content').notNullable();
-        table.text('slug').notNullable().unique();
+        table.string('slug').notNullable().unique();
         table.string('description', 500).defaultTo('');
         table.boolean('publication').defaultTo(false);
         table.string('cover', 500).defaultTo('');

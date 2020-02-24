@@ -28,11 +28,14 @@ class HomeController extends Controller {
             .orderBy("created_at", "desc")
             .getData();
 
-        let count = (await Post.count('* as count').first()).count;
+        let count = (await Post.count("* as count").first()).count;
         let pages = Math.ceil(count / 10);
         pages = pages > MAX_PAGES ? MAX_PAGES : pages;
         let numbers = [];
-        for(let i = 1; i <= pages; i++){if(!(i > 1 && i < pages && Math.abs(i - page) > 2)) numbers.push(i)}
+        for (let i = 1; i <= pages; i++) {
+            if (!(i > 1 && i < pages && Math.abs(i - page) > 2))
+                numbers.push(i);
+        }
 
         res.render("index", {
             posts: result,
@@ -45,6 +48,7 @@ class HomeController extends Controller {
 
     async article(req, res) {
         let article = await Post.findOne({ slug: req.params.slug });
+        if (article == null) return res.redirect("/");
         res.render("single", { article });
     }
 }
