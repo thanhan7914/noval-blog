@@ -5,6 +5,7 @@ middleware(router, 'web');
 
 router.get('/', {types: {page: 'number'}}, 'HomeController@index');
 router.get('/article/:slug', 'HomeController@article');
+router.get('/category/:slug', 'HomeController@category');
 router.get('/about', function(req, res) {res.render('about');});
 
 router.get('/admin/login', function(req, res) {
