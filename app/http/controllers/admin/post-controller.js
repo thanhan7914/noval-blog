@@ -52,7 +52,7 @@ class PostController extends Controller {
     }
 
     async store(req, res) {
-        let admin = await User.findOne('email', req.session.email);
+        let admin = await User.findOne({'email': req.session.email});
         let post = new Post(req.only(['title', 'content', 'description', 'cover']));
         post.slug = slug(req.get('title').trim());
         post.publication = true;
